@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://bmc0cawwprb1y"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bgihj"]
+bg_color = Color(1, 0.486275, 0.419608, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_78dg0"]
+bg_color = Color(0.694118, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l2f7i"]
+bg_color = Color(0.560784, 0.776471, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lk4qa"]
+bg_color = Color(0.12549, 0.596078, 1, 1)
+
+[node name="UnitStatBox" type="VBoxContainer"]
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Skeleton"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/background = SubResource("StyleBoxFlat_bgihj")
+theme_override_styles/fill = SubResource("StyleBoxFlat_78dg0")
+step = 1.0
+value = 75.0
+rounded = true
+show_percentage = false
+
+[node name="ProgressBar2" type="ProgressBar" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/background = SubResource("StyleBoxFlat_l2f7i")
+theme_override_styles/fill = SubResource("StyleBoxFlat_lk4qa")
+step = 1.0
+value = 50.0
+rounded = true
+show_percentage = false

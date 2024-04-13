@@ -1,10 +1,13 @@
 extends CharacterBody2D
 
 # Player movement speed
-var speed: float = 75
+@export var speed = 60
 
 # Target position for movement
 var target_position: Vector2
+
+func _ready():
+  var player = get_tree().root.get_node("Game/Player")
 
 func _physics_process(delta: float) -> void:
     if get_tree().root.get_node("Game").selected_units.has(self):

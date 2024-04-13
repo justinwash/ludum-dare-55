@@ -18,7 +18,7 @@ var selected: Array = []  # Array of selected units
 var drag_start: Vector2 = Vector2.ZERO
 var select_rect: RectangleShape2D = RectangleShape2D.new()  # Collision shape for drag box
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
     if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
         if event.pressed && !dragging:
           dragging = true
