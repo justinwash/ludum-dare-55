@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://d3tx7r60pp4iv"]
+
+[ext_resource type="Script" path="res://game.gd" id="1_maxsp"]
+[ext_resource type="PackedScene" uid="uid://bwc14s3a5v1dx" path="res://player.tscn" id="2_c4m1d"]
+[ext_resource type="PackedScene" uid="uid://dats48uo47l26" path="res://skeleton.tscn" id="3_x5bu2"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_2pe3q"]
+outlines = Array[PackedVector2Array]([PackedVector2Array(-2933, -2063, -2843, 3661, 3787, 3695, 3753, -2063)])
+source_geometry_group_name = &"navigation_polygon_source_group"
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_maxsp")
+
+[node name="Player" parent="." instance=ExtResource("2_c4m1d")]
+position = Vector2(75, 53)
+
+[node name="Minion" parent="." instance=ExtResource("3_x5bu2")]
+position = Vector2(102, 275)
+
+[node name="Minion2" parent="." instance=ExtResource("3_x5bu2")]
+position = Vector2(223, 241)
+
+[node name="Minion3" parent="." instance=ExtResource("3_x5bu2")]
+position = Vector2(221, 124)
+
+[node name="Minion4" parent="." instance=ExtResource("3_x5bu2")]
+position = Vector2(178, 335)
+
+[node name="Minion5" parent="." instance=ExtResource("3_x5bu2")]
+position = Vector2(26, 168)
+
+[node name="Minion6" parent="." instance=ExtResource("3_x5bu2")]
+position = Vector2(15, 31)
+
+[node name="Minion7" parent="." instance=ExtResource("3_x5bu2")]
+position = Vector2(158, 51)
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_2pe3q")
