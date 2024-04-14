@@ -1,8 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://dats48uo47l26"]
+[gd_scene load_steps=6 format=3 uid="uid://d2oi0bppxaw1n"]
 
-[ext_resource type="Script" path="res://actor.gd" id="1_1qh30"]
-[ext_resource type="Script" path="res://mover.gd" id="2_xqecd"]
-[ext_resource type="Script" path="res://skeleton_abilities.gd" id="3_18q1k"]
+[ext_resource type="Script" path="res://actor.gd" id="1_d8x7m"]
+[ext_resource type="Script" path="res://mover.gd" id="2_ahd3q"]
+[ext_resource type="Script" path="res://bowman_abilities.gd" id="3_kafpy"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_x6gh2"]
 radius = 22.0
@@ -11,19 +11,19 @@ height = 60.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2xdc1"]
 size = Vector2(38, 83)
 
-[node name="Skeleton" type="CharacterBody2D"]
+[node name="Bowman" type="CharacterBody2D"]
 y_sort_enabled = true
-script = ExtResource("1_1qh30")
-hp = 30
-hp_max = 30
+script = ExtResource("1_d8x7m")
+hp = 15
+hp_max = 15
 mp = 50
 mp_max = 50
 
 [node name="Mover" type="Node" parent="."]
-script = ExtResource("2_xqecd")
+script = ExtResource("2_ahd3q")
 
 [node name="Abilities" type="Node" parent="."]
-script = ExtResource("3_18q1k")
+script = ExtResource("3_kafpy")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 y_sort_enabled = true
@@ -40,7 +40,7 @@ grow_vertical = 0
 pivot_offset = Vector2(16, 70)
 size_flags_vertical = 8
 mouse_filter = 2
-color = Color(0.172549, 0.533333, 0.290196, 1)
+color = Color(0.594401, 0.415057, 0.0328728, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

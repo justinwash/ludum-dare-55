@@ -1,11 +1,10 @@
 extends PanelContainer
 
+@onready var player = get_tree().root.get_node("Game/Player")
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-  pass # Replace with function body.
+@onready var healthbar = $VBoxContainer/Healthbar
+@onready var manabar = $VBoxContainer/Manabar
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-  pass
+func _physics_process(_delta):
+  healthbar.value = player.hp
+  manabar.value = player.mp

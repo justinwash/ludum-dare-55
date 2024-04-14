@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://d3tx7r60pp4iv"]
+[gd_scene load_steps=20 format=3 uid="uid://d3tx7r60pp4iv"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_maxsp"]
 [ext_resource type="PackedScene" uid="uid://bwc14s3a5v1dx" path="res://player.tscn" id="2_c4m1d"]
@@ -7,6 +7,9 @@
 [ext_resource type="Script" path="res://ability_button.gd" id="5_8egj6"]
 [ext_resource type="Script" path="res://stats_panel.gd" id="6_40bcr"]
 [ext_resource type="Script" path="res://units_panel.gd" id="7_33mka"]
+[ext_resource type="Script" path="res://camera.gd" id="7_r1vhs"]
+[ext_resource type="PackedScene" uid="uid://cvllj1m1jnq38" path="res://ghoul.tscn" id="8_jctvw"]
+[ext_resource type="PackedScene" uid="uid://d2oi0bppxaw1n" path="res://bowman.tscn" id="9_oawws"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_2pe3q"]
 outlines = Array[PackedVector2Array]([PackedVector2Array(-2933, -2063, -2843, 3661, 3787, 3695, 3753, -2063)])
@@ -24,49 +27,43 @@ bg_color = Color(0.560784, 0.776471, 1, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lk4qa"]
 bg_color = Color(0.12549, 0.596078, 1, 1)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3yoii"]
+size = Vector2(23, 661)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7qgug"]
+size = Vector2(23, 661)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t5s5h"]
+size = Vector2(1165.5, 18.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vh5ev"]
+size = Vector2(1165.5, 18.5)
+
 [node name="Game" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_maxsp")
 
-[node name="Player" parent="." instance=ExtResource("2_c4m1d")]
-position = Vector2(75, 53)
-
-[node name="Minion" parent="." instance=ExtResource("3_x5bu2")]
-position = Vector2(102, 275)
-
-[node name="Minion2" parent="." instance=ExtResource("3_x5bu2")]
-position = Vector2(223, 241)
-
-[node name="Minion3" parent="." instance=ExtResource("3_x5bu2")]
-position = Vector2(221, 124)
-
-[node name="Minion4" parent="." instance=ExtResource("3_x5bu2")]
-position = Vector2(178, 335)
-
-[node name="Minion5" parent="." instance=ExtResource("3_x5bu2")]
-position = Vector2(26, 168)
-
-[node name="Minion6" parent="." instance=ExtResource("3_x5bu2")]
-position = Vector2(15, 31)
-
-[node name="Minion7" parent="." instance=ExtResource("3_x5bu2")]
-position = Vector2(158, 51)
-
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+position = Vector2(2705, -2845)
 navigation_polygon = SubResource("NavigationPolygon_2pe3q")
+
+[node name="Player" parent="." instance=ExtResource("2_c4m1d")]
+position = Vector2(131, 420)
 
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="UIContainer" type="Control" parent="UI"]
 layout_mode = 3
-anchors_preset = 12
-anchor_top = 1.0
+anchor_top = 0.985
 anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = -118.0
+anchor_bottom = 0.985
+offset_left = 10.0
+offset_top = -117.28
+offset_right = -12.0
+offset_bottom = 0.719971
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 1
 
 [node name="ColorRect" type="ColorRect" parent="UI/UIContainer"]
 layout_mode = 1
@@ -133,6 +130,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("5_8egj6")
+ability_name = "banish"
+hotkey = "w"
 
 [node name="BanishUI" type="VBoxContainer" parent="UI/UIContainer/Hotbar/AbilityPanel/AbilityGrid/BanishButton"]
 layout_mode = 1
@@ -163,6 +162,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("5_8egj6")
+ability_name = "blight"
+cost = 15
+hotkey = "e"
 
 [node name="BlightUI" type="VBoxContainer" parent="UI/UIContainer/Hotbar/AbilityPanel/AbilityGrid/BlightButton"]
 layout_mode = 1
@@ -194,6 +196,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("5_8egj6")
+ability_name = "charge"
+cost = 25
+required_unit_name = "Skeleton"
+hotkey = "a"
 
 [node name="ChargeUI" type="VBoxContainer" parent="UI/UIContainer/Hotbar/AbilityPanel/AbilityGrid/ChargeButton"]
 layout_mode = 1
@@ -217,7 +223,7 @@ layout_mode = 2
 [node name="Label2" type="Label" parent="UI/UIContainer/Hotbar/AbilityPanel/AbilityGrid/ChargeButton/ChargeUI/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "-50 minion MP"
+text = "-25 minion MP"
 horizontal_alignment = 1
 
 [node name="BarrageButton" type="Button" parent="UI/UIContainer/Hotbar/AbilityPanel/AbilityGrid"]
@@ -225,6 +231,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("5_8egj6")
+ability_name = "barrage"
+cost = 40
+required_unit_name = "Bowman"
+hotkey = "s"
 
 [node name="BarrageUI" type="VBoxContainer" parent="UI/UIContainer/Hotbar/AbilityPanel/AbilityGrid/BarrageButton"]
 layout_mode = 1
@@ -255,6 +265,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("5_8egj6")
+ability_name = "deathwave"
+cost = 75
+required_unit_name = "Ghoul"
+hotkey = "d"
 
 [node name="DeathwaveUI" type="VBoxContainer" parent="UI/UIContainer/Hotbar/AbilityPanel/AbilityGrid/DeathwaveButton"]
 layout_mode = 1
@@ -329,8 +343,57 @@ theme_override_constants/h_separation = 7
 theme_override_constants/v_separation = 0
 columns = 5
 
+[node name="Skeleton" parent="." instance=ExtResource("3_x5bu2")]
+position = Vector2(157, 236)
+friendly = true
+
+[node name="Skeleton2" parent="." instance=ExtResource("3_x5bu2")]
+position = Vector2(267, 345)
+friendly = true
+
+[node name="Ghoul" parent="." instance=ExtResource("8_jctvw")]
+position = Vector2(367, 419)
+friendly = true
+
+[node name="Ghoul2" parent="." instance=ExtResource("8_jctvw")]
+position = Vector2(248, 184)
+friendly = true
+
+[node name="Bowman" parent="." instance=ExtResource("9_oawws")]
+position = Vector2(363, 243)
+friendly = true
+
+[node name="Bowman2" parent="." instance=ExtResource("9_oawws")]
+position = Vector2(443, 285)
+friendly = true
+
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
+script = ExtResource("7_r1vhs")
+
+[node name="ScrollAreaLeft" type="Area2D" parent="Camera2D"]
+
+[node name="Left" type="CollisionShape2D" parent="Camera2D/ScrollAreaLeft"]
+position = Vector2(1.5, 320.5)
+shape = SubResource("RectangleShape2D_3yoii")
+
+[node name="ScrollAreaRight" type="Area2D" parent="Camera2D"]
+
+[node name="Right" type="CollisionShape2D" parent="Camera2D/ScrollAreaRight"]
+position = Vector2(1150, 325)
+shape = SubResource("RectangleShape2D_7qgug")
+
+[node name="ScrollAreaTop" type="Area2D" parent="Camera2D"]
+
+[node name="Top" type="CollisionShape2D" parent="Camera2D/ScrollAreaTop"]
+position = Vector2(577, 1)
+shape = SubResource("RectangleShape2D_t5s5h")
+
+[node name="ScrollAreaBottom" type="Area2D" parent="Camera2D"]
+
+[node name="Bottom" type="CollisionShape2D" parent="Camera2D/ScrollAreaBottom"]
+position = Vector2(576, 646)
+shape = SubResource("RectangleShape2D_vh5ev")
 
 [connection signal="pressed" from="UI/UIContainer/Hotbar/AbilityPanel/AbilityGrid/SummonButton" to="UI/UIContainer/Hotbar/AbilityPanel/AbilityGrid/SummonButton" method="_on_pressed"]
 [connection signal="pressed" from="UI/UIContainer/Hotbar/AbilityPanel/AbilityGrid/BanishButton" to="UI/UIContainer/Hotbar/AbilityPanel/AbilityGrid/BanishButton" method="_on_pressed"]
@@ -338,3 +401,15 @@ anchor_mode = 0
 [connection signal="pressed" from="UI/UIContainer/Hotbar/AbilityPanel/AbilityGrid/ChargeButton" to="UI/UIContainer/Hotbar/AbilityPanel/AbilityGrid/ChargeButton" method="_on_pressed"]
 [connection signal="pressed" from="UI/UIContainer/Hotbar/AbilityPanel/AbilityGrid/BarrageButton" to="UI/UIContainer/Hotbar/AbilityPanel/AbilityGrid/BarrageButton" method="_on_pressed"]
 [connection signal="pressed" from="UI/UIContainer/Hotbar/AbilityPanel/AbilityGrid/DeathwaveButton" to="UI/UIContainer/Hotbar/AbilityPanel/AbilityGrid/DeathwaveButton" method="_on_pressed"]
+[connection signal="mouse_entered" from="Camera2D/ScrollAreaLeft" to="Camera2D" method="_on_scroll_area_left_mouse_entered"]
+[connection signal="mouse_entered" from="Camera2D/ScrollAreaLeft" to="Camera2D/ScrollAreaLeft" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Camera2D/ScrollAreaLeft" to="Camera2D" method="_on_scroll_area_left_mouse_exited"]
+[connection signal="mouse_entered" from="Camera2D/ScrollAreaRight" to="Camera2D" method="_on_scroll_area_right_mouse_entered"]
+[connection signal="mouse_entered" from="Camera2D/ScrollAreaRight" to="Camera2D/ScrollAreaRight" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Camera2D/ScrollAreaRight" to="Camera2D" method="_on_scroll_area_right_mouse_exited"]
+[connection signal="mouse_entered" from="Camera2D/ScrollAreaTop" to="Camera2D" method="_on_scroll_area_top_mouse_entered"]
+[connection signal="mouse_entered" from="Camera2D/ScrollAreaTop" to="Camera2D/ScrollAreaTop" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Camera2D/ScrollAreaTop" to="Camera2D" method="_on_scroll_area_top_mouse_exited"]
+[connection signal="mouse_entered" from="Camera2D/ScrollAreaBottom" to="Camera2D" method="_on_scroll_area_bottom_mouse_entered"]
+[connection signal="mouse_entered" from="Camera2D/ScrollAreaBottom" to="Camera2D/ScrollAreaBottom" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Camera2D/ScrollAreaBottom" to="Camera2D" method="_on_scroll_area_bottom_mouse_exited"]

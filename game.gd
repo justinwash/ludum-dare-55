@@ -1,17 +1,41 @@
 extends Node2D
 
 var selected_units = []
+var active_ability = null
+
+@onready var player = get_node("Player")
+
+signal selection_changed(selected_units)
+
+func _ready():
+  Input.mouse_mode = Input.MOUSE_MODE_CONFINED
 
 func _process(delta):
   # Listen for left mouse button click
-  if Input.is_action_just_pressed("r_click") && selected_units != []:
+  if Input.is_action_just_pressed("r_click"):
+    if selected_units == []:
+      selected_units = [player]
     # Set the target position to the global mouse position
     for unit in selected_units:
-      print('setting target to ', get_global_mouse_position())
       unit.target_position = get_global_mouse_position()
       
   if Input.is_action_just_pressed("space"):
     selected_units = [$Player]
+    selection_changed.emit(selected_units)
+    
+  if Input.is_action_just_pressed("tab"):
+    selected_units = get_tree().get_nodes_in_group("friendly_actor")
+    selection_changed.emit(selected_units)
+  if Input.is_action_just_pressed("1"):
+    selected_units = get_tree().get_nodes_in_group("friendly_skeleton")
+    selection_changed.emit(selected_units)
+  if Input.is_action_just_pressed("2"):
+    selected_units = get_tree().get_nodes_in_group("friendly_bowman")
+    selection_changed.emit(selected_units)
+  if Input.is_action_just_pressed("3"):
+    selected_units = get_tree().get_nodes_in_group("friendly_ghoul")
+    selection_changed.emit(selected_units)
+    
       
 var dragging: bool = false
 var selected: Array = []  # Array of selected units
@@ -20,14 +44,22 @@ var select_rect: RectangleShape2D = RectangleShape2D.new()  # Collision shape fo
 
 func _unhandled_input(event: InputEvent) -> void:
     if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+      if active_ability == null:
         if event.pressed && !dragging:
           dragging = true
           drag_start = event.position
+          update(event)
         elif dragging:
             # End the drag when button is released
             dragging = false
-            print(selected_units)
-
+      elif event.pressed:
+        if active_ability.required_unit_name == "Player":
+          player.abilities.call(active_ability.ability_name, event.position, active_ability.cost)
+        for unit in selected_units:
+          if unit.abilities.has_method(active_ability.ability_name) && unit.mp >= active_ability.cost:
+            unit.abilities.call(active_ability.ability_name, event.position, active_ability.cost)
+        active_ability = null
+            
     if event is InputEventMouseMotion and dragging:
         update(event)
 
@@ -55,4 +87,6 @@ func update(event) -> void:
     for item in selected:
       if item.collider is CharacterBody2D:
         selected_units.append(item.collider)
+    
+    selection_changed.emit(selected_units)
       
