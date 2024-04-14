@@ -11,6 +11,9 @@ extends CharacterBody2D
 
 @onready var abilities = $Abilities
 
+var current_target = null
+var target_in_range = false
+
 var t = 0
 
 # Target position for movement
@@ -20,6 +23,8 @@ func _ready():
   
   var player = get_tree().root.get_node("Game/Player")
   if friendly:
+    $FriendlyIndicator.visible = true
+    $EnemyIndicator.visible = false
     add_to_group("friendly_actor")
     if name.contains("Skeleton"):
       add_to_group("friendly_skeleton")
@@ -27,6 +32,9 @@ func _ready():
       add_to_group("friendly_bowman")
     if name.contains("Ghoul"):
       add_to_group("friendly_ghoul")
+  else:
+    $FriendlyIndicator.visible = false
+    $EnemyIndicator.visible = true
 
 func _physics_process(delta: float) -> void:
   t += 1
@@ -40,8 +48,28 @@ func _physics_process(delta: float) -> void:
       $SelectIndicator.visible = false
   else:
     $SelectIndicator.visible = false
-
+    
+  if current_target:
+    abilities.attack(current_target)
+    
 func _on_area_2d_input_event(viewport, event, shape_idx):
   if friendly:
     if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
       get_tree().root.get_node("Game").selected_units = [self]
+
+
+func _on_target_area_body_entered(body):
+  if !body.friendly && !current_target:
+    current_target = body
+    
+func _on_target_area_body_exited(body):
+  if body == current_target:
+    current_target = null
+    
+func _on_attack_area_body_entered(body):
+  if body == current_target:
+    target_in_range = true
+
+func _on_attack_area_body_exited(body):
+  if body == current_target:
+    target_in_range = false

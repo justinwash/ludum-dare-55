@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bwc14s3a5v1dx"]
+[gd_scene load_steps=7 format=3 uid="uid://bwc14s3a5v1dx"]
 
 [ext_resource type="Script" path="res://actor.gd" id="1_lo74t"]
 [ext_resource type="Script" path="res://mover.gd" id="2_kpwyj"]
@@ -10,6 +10,9 @@ height = 78.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vgkhd"]
 size = Vector2(52, 112)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_exp16"]
+radius = 64.0488
 
 [node name="Player" type="CharacterBody2D"]
 y_sort_enabled = true
@@ -25,7 +28,29 @@ script = ExtResource("2_kpwyj")
 [node name="Abilities" type="Node" parent="."]
 script = ExtResource("3_ctjbp")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="EnemyIndicator" type="ColorRect" parent="."]
+offset_left = -21.0
+offset_top = -98.0
+offset_right = 21.0
+offset_bottom = 1.0
+mouse_filter = 2
+color = Color(1, 0, 0, 1)
+
+[node name="FriendlyIndicator" type="ColorRect" parent="."]
+offset_left = -21.0
+offset_top = -98.0
+offset_right = 21.0
+offset_bottom = 1.0
+mouse_filter = 2
+color = Color(0, 1, 0, 1)
+
+[node name="SelectIndicator" type="ColorRect" parent="."]
+offset_left = -22.0
+offset_top = 6.0
+offset_right = 22.0
+offset_bottom = 10.0
+
+[node name="Sprite" type="ColorRect" parent="."]
 y_sort_enabled = true
 anchors_preset = 7
 anchor_left = 0.5
@@ -46,20 +71,27 @@ color = Color(0.996078, 0, 0.223529, 1)
 position = Vector2(-1, -22)
 shape = SubResource("CapsuleShape2D_x6gh2")
 
-[node name="SelectIndicator" type="ColorRect" parent="."]
-offset_left = -22.0
-offset_top = 6.0
-offset_right = 22.0
-offset_bottom = 10.0
-metadata/_edit_use_anchors_ = true
-
-[node name="Area2D" type="Area2D" parent="."]
+[node name="ClickListener" type="Area2D" parent="."]
 position = Vector2(-20, -96)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ClickListener"]
 position = Vector2(20, 53)
 shape = SubResource("RectangleShape2D_vgkhd")
 
+[node name="TargetArea" type="Area2D" parent="."]
+position = Vector2(-16, -70)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TargetArea"]
+position = Vector2(16, 39.5)
+shape = SubResource("CircleShape2D_exp16")
+
+[node name="AttackArea" type="Area2D" parent="."]
+position = Vector2(-16, -70)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+position = Vector2(16, 39.5)
+shape = SubResource("CircleShape2D_exp16")
+
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 
-[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
+[connection signal="input_event" from="ClickListener" to="." method="_on_area_2d_input_event"]

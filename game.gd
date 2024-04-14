@@ -85,7 +85,7 @@ func update(event) -> void:
     selected_units = [] 
     
     for item in selected:
-      if item.collider is CharacterBody2D:
+      if item.collider is CharacterBody2D && item.collider.friendly:
         selected_units.append(item.collider)
     
     selection_changed.emit(selected_units)

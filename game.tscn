@@ -367,6 +367,24 @@ friendly = true
 position = Vector2(443, 285)
 friendly = true
 
+[node name="Skeleton3" parent="." instance=ExtResource("3_x5bu2")]
+position = Vector2(747, 243)
+
+[node name="Skeleton4" parent="." instance=ExtResource("3_x5bu2")]
+position = Vector2(857, 352)
+
+[node name="Ghoul3" parent="." instance=ExtResource("8_jctvw")]
+position = Vector2(957, 426)
+
+[node name="Ghoul4" parent="." instance=ExtResource("8_jctvw")]
+position = Vector2(838, 191)
+
+[node name="Bowman3" parent="." instance=ExtResource("9_oawws")]
+position = Vector2(953, 250)
+
+[node name="Bowman4" parent="." instance=ExtResource("9_oawws")]
+position = Vector2(1033, 292)
+
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
 script = ExtResource("7_r1vhs")
